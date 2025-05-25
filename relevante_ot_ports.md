@@ -25,8 +25,3 @@ In OT-Umgebungen (z. B. SCADA, ICS, Gebäudeautomation) spielen neben industri
 | HTTP                 | TCP           | 80                | Webinterface für Geräte, Panels, SCADA-Systeme                                   |
 | HTTPS                | TCP           | 443               | Sichere Webschnittstellen                                                        |
 
-## ⚠️ Hinweise
-
-- **Nicht abgesicherte Dienste** wie Telnet, VNC oder SNMPv1/v2c sollten vermieden oder ersetzt werden.
-- Viele OT-Geräte besitzen **Webinterfaces** – Port 80/443 ist daher ein häufiger Einstiegspunkt.
-- Achte auf **UDP-Ports**, da sie oft von Sicherheitslösungen übersehen werden.
