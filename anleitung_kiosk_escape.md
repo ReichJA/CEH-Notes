@@ -1,16 +1,11 @@
 # 🛠️ Anleitung: Windows Kiosk Mode mit Flipper Zero (BadUSB) verlassen
 
-## ⚠️ Rechtlicher Hinweis
-Dieses Vorgehen darf **ausschließlich in autorisierten Penetrationstests** oder Testumgebungen eingesetzt werden. Unbefugter Zugriff oder Manipulation ist strafbar (§ 202a StGB).
-
----
-
 ## 📦 Voraussetzungen
 
 - Flipper Zero mit aktueller Firmware
 - BadUSB-Funktion aktiviert
 - Zugriff auf das USB-Laufwerk des Flipper
-- Datei: `escape_kiosk_mode.txt`
+- [Datei: escape_kiosk_mode.txt](https://github.com/ReichJA/CEH-Notes/edit/main/anleitung_kiosk_escape.md#:~:text=escape_kiosk_mode.txt)
 
 ---
 
