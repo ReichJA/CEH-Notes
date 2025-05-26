@@ -255,7 +255,7 @@ nmap -sn -PE 10.10.1.0/24
 
 ---
 
-## 3. Scan-Typen
+## Scan-Typen
 
 ### TCP Scanning
 
@@ -412,7 +412,7 @@ Antwortet ein Port mit ICMP Port Unreachable, ist er geschlossen.
 **Zenmap Beispiel:**
   ```bash
   nmap -sU <Ziel-IP>
-
+```
 
 #UDP RECVFROM() und WRITE() Scan
 
@@ -672,20 +672,20 @@ nmap -sV --reason -v -sT 10.10.1.11
 
 ```bash
 ping -c 1 10.10.1.11 && echo "Check the TTL value from the response to infer the OS (Linux/Unix: 64, Windows: 128)"
-
+```
 - Sendet einen Ping.
 - TTL 64 → Linux/Unix, TTL 128 → Windows.
 
 ```bash
 ping -c 1 10.10.1.9 | grep "ttl"
-
+```
 - Ping mit Ausgabe gefiltert auf TTL.
 
 Beispiel Nmap Script Engine OS-Erkennung auf mehreren Zielen
 
 ```bash
 nmap -iL scan1.txt -O --script=default --script-args=newtargets -oN os_discovery_results.txt
-
+```
 - -iL scan1.txt: Ziele aus Datei.
 - -O: OS-Erkennung.
 - --script=default: Standard-Skripte.
@@ -696,12 +696,16 @@ nmap -iL scan1.txt -O --script=default --script-args=newtargets -oN os_discovery
 
 ```bash
 #!/bin/bash
+
 # Ping Scan im Subnetz
 nmap -sP 10.10.1.0/24 -oG - | awk '/Up$/{print $2}' > live_hosts.txt
+
 # Service- und Versionserkennung der aktiven Hosts
 nmap -iL live_hosts.txt -sV -oA scan_results
+
 # Ausgabe der Ergebnisse
 cat scan_results.nmap
+```
 
 - Findet aktive Hosts.
 - Scannt offene Ports und Dienstversionen.
