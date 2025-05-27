@@ -720,4 +720,102 @@ cat scan_results.nmap
 - -oA scan_results: Ergebnisse in verschiedenen Formaten.
 - cat scan_results.nmap: Zeigt Ergebnisse an.
 
+# Cheatsheet: Chapter 03 – Scanning Networks
+
+## Packet Fragmentation  
+- Aufteilung eines Scan-Pakets in kleinere Fragmente, um IDS/Firewall-Filter zu umgehen.  
+- IDS überspringen oft fragmentierte Pakete wegen hohem Ressourcenverbrauch.  
+- Pakete werden am Ziel reassemblieren (z.B. mit Nmap).  
+- **SYN/FIN Scanning mit IP-Fragmente**: TCP-Header wird fragmentiert gesendet, um Paketfilter zu täuschen.  
+- Kann auf Ziel unerwartete Fehler (Crashes, Reboots) auslösen.  
+- Einige Firewalls blockieren IP-Fragmentierung (z.B. Linux Kernel Option CONFIG_IP_ALWAYS_DEFRAG).
+
+```bash
+nmap -f <Ziel-IP>
+# -f aktiviert die Fragmentierung der Pakete.
+```
+
+```bash
+nmap -sS -f <Ziel-IP>
+# -f aktiviert die Fragmentierung der Pakete.
+# -sS führt einen SYN Scan durch (halb-offene Verbindung).
+```
+
+-f führt zu einen normalen Output.
+
+## Source Routing  
+- Manipulation des IP-Optionsfeldes, um die Paketroute gezielt zu steuern (lockere oder strenge Source Routing).  
+- Ziel: Umgehen von Firewalls/IDS auf bestimmten Routern.  
+- Ermöglicht, den Pfad ohne „überwachende“ Router zu wählen.
+
+```python
+from scapy.all import *
+
+ip = IP(dst="192.168.1.100", options=[IPOption('\x83\x04\x0a\x0a\x0a\x01')])
+syn = TCP(dport=80, flags='S')
+pkt = ip/syn
+send(pkt)
+```
+
+
+## Source Port Manipulation  
+- Verwendung bekannter Quellports (z.B. HTTP, DNS) um Firewall-Regeln zu umgehen, die diesen Ports vertrauen.  
+- Firewall-Regeln werden oft zu großzügig auf populäre Ports gesetzt.  
+- Nmap Option: `-g` oder `--source-port` für Port-Manipulation.
+
+## IP Address Decoy  
+- Verwendung mehrerer „Täuschungs“-IP-Adressen zusammen mit der echten Scanning-IP, um IDS/Firewalls zu verwirren.  
+- Erschwert die Identifikation der tatsächlichen Scanquelle.  
+- Nmap Option: `-D RND:n` (n zufällige Decoys) oder manuelle Angabe.  
+- Nachteil: Verlangsamt Scan, weniger genau.
+
+## IP Address Spoofing  
+- Fälschung der Quell-IP-Adresse, um die Herkunft zu verbergen.  
+- Häufig bei DoS-Angriffen verwendet.  
+- Verhindert erfolgreiche TCP-Handshake (keine echte Verbindung).  
+- Tool-Beispiel: Hping3 (`hping3 -a <spoofed IP>`).
+
+## MAC Address Spoofing  
+- Fälschung der MAC-Adresse, um MAC-basierte Firewall-Regeln zu umgehen.  
+- Nmap Optionen:  
+  - `--spoof-mac 0` (randomisierte MAC),  
+  - `--spoof-mac <Vendor>` (Hersteller-MAC),  
+  - `--spoof-mac <neue MAC>` (manuell gesetzt).
+
+## Creating Custom Packets  
+- Einsatz von Packet Crafting Tools (z.B. Colasoft Packet Builder, NetScanTools Pro) zur Erstellung und Versand eigener Pakete.  
+- Tools bieten hexadezimale, ASCII- und Dekodierungsansichten für Paketbearbeitung.  
+- Möglichkeiten: Fragmentierte Pakete, Flooding (DoS-Attacken), Umgehung von IDS/Firewall.  
+
+## Randomizing Host Order  
+- Scannen der Hosts in zufälliger Reihenfolge, um weniger auffällig zu sein.  
+- Nmap Option: `--randomize-hosts` (shuffelt Hostgruppen vor Scan).  
+- Alternativ manuelle Listen-Generierung und Perl-Skripte zum Randomisieren.
+
+## Sending Bad Checksums  
+- Versand von Paketen mit fehlerhaften TCP/UDP Checksummen.  
+- Prüft, ob Firewalls/IDS Checksummen validieren (keine Antwort → korrekt konfiguriert).  
+- Nmap Option: `--badsum` sendet Pakete mit ungültigen Checksummen.
+
+## Proxy Servers  
+- Vermittler-Server, die Netzwerkverkehr weiterleiten und verschleiern.  
+- Funktionen: Firewall, IP-Multiplexing (NAT/PAT), Anonymisierung, Inhaltsfilterung, Bandbreitensparen.  
+- Angreifer nutzen Proxy-Server zur Identitätsverschleierung und Firewall-Umgehung.  
+- Proxy-Ketten (Proxy Chaining) erhöhen Anonymität durch mehrere Zwischenserver.  
+- Bekannte Proxy-Tools: Proxy Switcher, CyberGhost VPN, Burp Suite, Tor, Hotspot Shield, Proxifier, IPRoyal.
+
+## Anonymizers  
+- Server, die Webanfragen im Namen des Nutzers senden, entfernen alle Identifikationsdaten (IP-Adressen).  
+- Erlauben Zugriff auf zensierte oder gesperrte Inhalte.  
+- Typen:  
+  - **Networked Anonymizers:** Daten laufen über mehrere Knoten, erhöhen Anonymität, aber jedes Zwischenknoten birgt Risiken.  
+  - **Single-Point Anonymizers:** Daten gehen nur über einen Server, weniger widerstandsfähig gegen Analyse.  
+- Tools: Whonix, Psiphon, TunnelBear, I2P, Bright Data Proxy API.
+
+## Censorship Circumvention Tools  
+- VPNs oder Live-OS zur Umgehung von Zensur und Geo-Blockaden.  
+- Beispiele: AstrillVPN (VPN mit Verschlüsselung und kein Logging), Tails (Live-OS mit starken Kryptofunktionen, keine Spuren).
+
+
+
 
