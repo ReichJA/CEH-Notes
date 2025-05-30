@@ -817,5 +817,120 @@ send(pkt)
 - Beispiele: AstrillVPN (VPN mit Verschlüsselung und kein Logging), Tails (Live-OS mit starken Kryptofunktionen, keine Spuren).
 
 
+# 🛡️ Cheatsheet – Chapter 03: Scanning Networks
+
+## 🔍 Network Scanning Countermeasures
+- Ziel: Schutz vor Informationsverlust durch Aufdeckung und Härtung erkannter Schwachstellen
+
+## 📡 Ping Sweep Countermeasures
+- ICMP-Echo-Requests blockieren (Firewall, ACLs)
+- IDS/IPS wie **Snort** einsetzen  
+  - **IDS**: Erkennt verdächtigen Netzwerkverkehr, **meldet**  
+  - **IPS**: Erkennt & **blockiert** automatisch
+- ICMP-Traffic analysieren & begrenzen (Rate Limiting)
+- **DMZ (Demilitarized Zone)**:  
+  - Zwischennetz mit öffentlich erreichbaren Servern  
+  - Isoliert vom internen Netz, durch Firewalls geschützt  
+  - Nur erlaubte ICMP-Typen (z. B. ECHO_REPLY) zulassen
+- Netzwerk segmentieren
+- Private IPs + NAT einsetzen
+
+## 🔓 Port Scanning Countermeasures
+- Firewall/IDS: Tiefenprüfung aktivieren
+- Portscans selbst testen (z. B. mit Nmap)
+- Firmware aktuell halten
+- Nur notwendige Dienste offenhalten
+- Kritische Ports blockieren: `135–159`, `256–258`, `389`, `445`, `1080`, `1745`, `3268`
+- Spoofing/Source Routing verhindern
+- Honeypots einsetzen
+- **IPS**: Echtzeit-Blockierung
+- **Port Knocking**: Portzugang durch geheime Klopfsequenz
+- VLANs trennen Netze logisch
+- **Ingress Filtering**: Blockiert gefälschte Quell-IP von außen
+- **Egress Filtering**: Stoppt Datenabfluss durch interne Angreifer
+
+## 🏷️ Banner Grabbing Countermeasures
+
+### Was ist **Banner Grabbing**?
+- Technik zur Erkennung von Diensten über offene Ports
+- Ziel: Herausfinden von OS, Dienstname, Version → Angriffsvorbereitung
+
+### Gegenmaßnahmen:
+- Falsche Banner anzeigen
+- Unnötige Dienste deaktivieren
+- **ServerSignature Off** (Apache): Entfernt Serverdetails aus Fehlermeldungen
+- **mod_headers**: Entfernt oder manipuliert HTTP-Header (z. B. `X-Powered-By`)
+- **.htaccess**: Konfiguriert Verhalten auf Verzeichnisebene
+- Datei-Endungen verstecken:
+  - `mod_rewrite` in Apache (`RewriteRule ^kontakt$ kontakt.php [L]`)
+  - Routing per Framework oder URL-Mapping nutzen
+- HTTP durch **HTTPS, SSH, SFTP** ersetzen
+- TLS überall aktivieren
+
+## 🕵️ IP Spoofing Detection Techniques
+
+### Was ist **TTL (Time To Live)?**
+- TTL gibt an, wie viele „Hops“ ein IP-Paket im Netzwerk überleben darf  
+- Jeder Router reduziert TTL um 1 – bei `0` wird das Paket verworfen  
+- Typische Startwerte:
+  - Linux: 64
+  - Windows: 128
+  - Cisco/Unix: 255  
+- **Erkennungsmethode**: TTL im Antwortpaket ≠ erwarteter Wert → evtl. Spoofing
+
+### Was ist die **IPID (IP Identification Number)?**
+- 16-Bit-Zählerfeld in IP-Header → wird bei jedem Paket erhöht  
+- Erkennung: Zwei Pakete vom selben Host sollten fast identische IPIDs haben  
+- Große Abweichung → Quelle evtl. gefälscht
+
+### Weitere Methoden:
+- **Flow Control (TCP 3-Way Handshake)**:  
+  - Angreifer kann SYN senden, aber keine gültige ACK-Antwort liefern → Spoof erkannt
+- **Congestion Window Test**:  
+  - Spoofer erkennt keine Fenstergröße → Antwortverhalten ist auffällig
+
+## 🔐 IP Spoofing Countermeasures
+- IP-basierte Vertrauensmodelle vermeiden
+- ACLs + Firewalls für **Ingress** & **Egress Filtering**
+- **Random Initial Sequence Numbers (ISNs)** nutzen
+- Verschlüsselung einsetzen (VPN, IPSec, TLS)
+- Digitale Zertifikate und Zwei-Faktor-Auth
+- IPv6 mit zufälliger Adressvergabe
+- DHCP-Tabellen für Filterung nutzen
+- **NAT zur Adressverschleierung** einsetzen
+
+### 🧪 Beispiel: NAT (Network Address Translation)
+
+**Ziel**: Interne IPs wie `192.168.0.12` für externe Systeme unsichtbar machen
+
+**Funktionsweise**:
+1. Client mit IP `192.168.0.12` sendet HTTP-Request an `93.184.216.34`
+2. NAT-Router ersetzt Quelladresse durch öffentliche IP `203.0.113.7`
+3. Externer Server antwortet an `203.0.113.7`
+4. Router leitet Antwort intern an `192.168.0.12` weiter
+
+**Vorteile**:
+- Interne Struktur bleibt verborgen
+- Angriffsziel reduziert
+- Spart öffentliche IPs
+
+## 🧰 Scanning Detection & Prevention Tools
+
+| Tool                        | Funktion/Schwerpunkt                                       |
+|----------------------------|-------------------------------------------------------------|
+| **ExtraHop**               | Echtzeit-Überwachung, IoT-Erkennung, SSL/TLS-Analyse        |
+| **Splunk Enterprise Sec.** | Sicherheitsdatenkorrelation & Visualisierung                |
+| **Scanlogd**               | Lightweight Portscan-Erkennung                             |
+| **Vectra Detect**          | KI-gestützte Scanverhaltensanalyse                         |
+| **IBM QRadar XDR**         | SIEM mit XDR-Funktionalität                                |
+| **Cynet 360 AutoXDR™**     | Automatisierte Bedrohungsabwehr in Echtzeit                |
+
+## 🧾 Module Summary
+- Ping Sweeps zur Live-Host-Erkennung
+- Port Scans, Banner Grabbing, OS-Fingerprinting
+- Scan-Verschleierung und IDS/Firewall-Umgehung
+- Gegenmaßnahmen für alle Scanarten inkl. IP-Spoofing
+- **Nächstes Kapitel**: Enumeration – gezielte Informationsgewinnung über Ziele
+
 
 
