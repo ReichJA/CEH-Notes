@@ -91,3 +91,57 @@
 | **Bestandteile**       | Seriennummer, öffentlicher Schlüssel, Aussteller, Signatur, Gültigkeit |
 | **PKI-Integration**    | Bestandteil einer Zertifikatskette (Root → Intermediate → Client)  |
 | **Formate**            | PEM, DER, PKCS#12 (.pfx, .p12)                                      |
+
+## IPSec (Internet Protocol Security)
+- Protokollpaket zur Sicherung von IP-Kommunikation auf Schicht 3 (Netzwerkschicht)
+- Schützt vor: Ausspähen, Manipulation, Replay-Angriffen
+- Besteht aus:
+  - **AH (Authentication Header)**: Authentifizierung & Integrität
+  - **ESP (Encapsulating Security Payload)**: Authentifizierung, Integrität & **Verschlüsselung**
+- Zwei Modi:
+  - **Transport-Modus**: Nur Payload wird geschützt
+  - **Tunnel-Modus**: Ganzes IP-Paket wird geschützt (z. B. bei VPNs)
+
+## ISAKMP (Internet Security Association and Key Management Protocol)
+- Framework zur Verwaltung von Sicherheitsparametern (Security Associations)
+- Definiert den Ablauf für Authentifizierung, Schlüsselaushandlung und Verwaltung
+- Grundlage für **IKE**, beschreibt den Ablauf, aber keine Kryptografie
+
+## IKE (Internet Key Exchange)
+- Implementierung von ISAKMP mit kryptografischen Verfahren
+- Aufgabe: Sichere **Aushandlung von Schlüsseln** und Aufbau einer **Security Association (SA)**
+- Zwei Phasen:
+  1. Aufbau eines sicheren Kanals (IKE SA)
+  2. Aushandlung von IPSec-Schlüsseln (IPSec SA)
+
+## HMAC (Hash-based Message Authentication Code)
+- Gewährleistet **Integrität und Authentizität** von Nachrichten
+- Kombination aus:
+  - Hash-Funktion (z. B. SHA-256)
+  - Geheimer Schlüssel
+- Einsatz in: **IPSec**, **TLS**, **SSH**, **JWTs**
+
+---
+
+## SSL (Secure Sockets Layer)
+- Ursprüngliches Verschlüsselungsprotokoll für die sichere Kommunikation im Internet
+- Heute **veraltet und unsicher** (SSL 2.0, 3.0)
+- Vorgänger von TLS
+
+## TLS (Transport Layer Security)
+- Nachfolger von SSL, aktuelles Standardprotokoll zur **Ende-zu-Ende-Verschlüsselung** im Web
+- Wird verwendet bei: **HTTPS**, **E-Mail-Verschlüsselung**, **VoIP**
+- Schützt auf Schicht 4 (Transportschicht)
+- Unterstützt:
+  - Authentifizierung über Zertifikate
+  - Verschlüsselung (z. B. AES)
+  - Integritätsprüfung (z. B. HMAC)
+
+## JWT (JSON Web Token)
+- Kompakter Token zur sicheren Übertragung von Informationen als **JSON-Objekt**
+- Besteht aus drei Teilen:
+  1. Header (z. B. Algorithmus: HS256)
+  2. Payload (z. B. Benutzer-ID, Rollen)
+  3. Signature (z. B. HMAC mit geheimem Schlüssel oder RSA)
+- Einsatz z. B. in **Authentifizierungsmechanismen** von Webanwendungen
+- Vorteil: Kann **serverseitig stateless** validiert werden
