@@ -248,16 +248,61 @@ Die **DMZ** ist ein „Pufferbereich“ zwischen sicherem LAN und unsicherem Int
 | **False Positives**      | Selten bei korrekter Konfiguration                | Möglich (führt zu Fehlalarmen)                  | Kritisch (kann legitimen Traffic blockieren)     |
 | **Beispiele**            | iptables, pfSense, Cisco ASA                      | Snort (IDS-Modus), Suricata, Zeek               | Snort (IPS-Modus), Suricata, Cisco Firepower     |# Vergleich: Firewall vs. IDS vs. IPS
 
-| Merkmal                   | **Firewall**                                      | **IDS (Intrusion Detection System)**             | **IPS (Intrusion Prevention System)**            |
-|--------------------------|---------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
-| **Ziel**                 | Zugriffskontrolle und Paketfilterung              | Angriffserkennung                               | Angriffserkennung und Verhinderung               |
-| **Arbeitsweise**         | Regelbasiertes Blockieren/Erlauben von Traffic    | Passives Monitoring und Alarmierung             | Aktive Blockierung und Traffic-Manipulation      |
-| **Position im Netzwerk** | Zwischen internem und externem Netz (Gateway)     | Meist hinter der Firewall (z. B. SPAN-Port)      | Inline im Datenpfad (zwischen Endpunkten)        |
-| **Traffic-Verarbeitung** | Blockiert oder erlaubt Pakete anhand von Regeln   | Analysiert Kopien des Datenverkehrs             | Analysiert und blockiert/ändert Traffic direkt   |
-| **Reaktion auf Angriffe**| Blockiert nach Regeln                             | Alarmiert (Log, E-Mail, SIEM-Anbindung)         | Blockiert/verändert Traffic, trennt Verbindungen |
-| **Regelbasis**           | Manuell definierte Regeln                         | Signatur- oder verhaltensbasiert                | Signatur- oder verhaltensbasiert                 |
-| **Fokus**                | Zugriffskontrolle                                | Erkennung von Angriffen (z. B. Exploits)         | Erkennung und Verhinderung von Angriffen         |
-| **Einfluss auf Latenz**  | Gering bis mittel                                 | Gering (da passiv)                              | Mittel bis hoch (durch Analyse im Datenpfad)     |
-| **False Positives**      | Selten bei korrekter Konfiguration                | Möglich (führt zu Fehlalarmen)                  | Kritisch (kann legitimen Traffic blockieren)     |
-| **Beispiele**            | iptables, pfSense, Cisco ASA                      | Snort (IDS-Modus), Suricata, Zeek               | Snort (IPS-Modus), Suricata, Cisco Firepower     |
+## 🔥 Unterschied zwischen Network-based und Host-based Firewalls
 
+### 🧱 1. Network-based Firewall
+
+Eine **network-based firewall** (netzwerkbasierte Firewall) wird auf einem dedizierten Gerät oder Gateway installiert, das den Datenverkehr zwischen verschiedenen Netzwerken überwacht und filtert – typischerweise zwischen dem internen Netzwerk und dem Internet.
+
+#### Merkmale:
+- Läuft auf Routern, Hardware-Appliances oder dedizierten Servern.
+- Schützt **mehrere Geräte gleichzeitig** innerhalb eines Netzwerks.
+- Arbeitet meist auf Netzwerk- oder Transportebene (OSI-Schichten 3 und 4).
+- Typischerweise im Rechenzentrum oder an Netzwerkgrenzen platziert.
+- Beispiele: Cisco ASA, pfSense, Fortinet, Palo Alto.
+
+#### Vorteile:
+- Zentrale Kontrolle über ein gesamtes Netzwerksegment.
+- Weniger Belastung für Endgeräte.
+- Gut skalierbar.
+
+#### Nachteile:
+- Keine Sicht auf lokalen Datenverkehr innerhalb eines Hosts.
+- Kann umgangen werden, wenn ein Angreifer bereits im internen Netz ist.
+
+---
+
+### 💻 2. Host-based Firewall
+
+Eine **host-based firewall** (hostbasierte Firewall) wird direkt auf einem einzelnen Gerät (Host) installiert, z. B. einem Laptop, Server oder PC.
+
+#### Merkmale:
+- Läuft als Software auf dem Endgerät (z. B. Windows Defender Firewall, iptables).
+- Schützt **nur das jeweilige Gerät**.
+- Erkennt auch lokalen Verkehr zwischen Anwendungen oder Schnittstellen.
+- Arbeitet oft auf höheren OSI-Schichten (Schichten 4–7).
+
+#### Vorteile:
+- Fein granulare Kontrolle über eingehende/ausgehende Verbindungen pro Anwendung.
+- Bietet Schutz auch innerhalb des Netzwerks (z. B. gegen laterale Bewegungen von Angreifern).
+- Ideal für mobile Geräte, Notebooks und Server.
+
+#### Nachteile:
+- Muss auf jedem Gerät separat installiert und konfiguriert werden.
+- Höherer Verwaltungsaufwand bei vielen Endpunkten.
+- Kann durch Malware auf dem Host selbst kompromittiert werden.
+
+---
+
+### 🔄 Vergleichstabelle
+
+| Merkmal                  | Network-based Firewall     | Host-based Firewall           |
+|--------------------------|----------------------------|-------------------------------|
+| Schutzumfang             | Gesamtes Netzwerksegment   | Einzelner Host                |
+| Installation             | Auf Gateway/Appliance      | Auf dem Endgerät              |
+| Sichtbarkeit             | Netzwerkverkehr            | Lokaler & Netzwerkverkehr     |
+| Performance              | Entlastet Hosts            | Nutzt lokale Ressourcen       |
+| Verwaltung               | Zentralisiert              | Dezentral (je Host)           |
+| Angriffserkennung lokal  | Eingeschränkt              | Sehr gut                      |
+
+---
