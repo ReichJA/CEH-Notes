@@ -160,25 +160,104 @@ Firewall = Hard-/Software-Gateway, das Verkehr zwischen Netzwerken basierend auf
 
 ---
 
-## 🏗️ Firewall-Architektur
+## Firewall
 
-### ▪ Bastion Host
-- Speziell gehärteter Server zwischen Internet & Intranet
-- Zwei Schnittstellen: öffentlich (Internet), intern (Intranet)
+Eine **Firewall** ist ein software- oder hardwarebasiertes System, das den Datenverkehr zwischen einem privaten und einem externen Netzwerk (z. B. dem Internet) filtert.
 
-### ▪ Screened Subnet (DMZ)
-- Drei-Zonen-Modell mit separater DMZ für öffentliche Dienste
-- Internet ↔ Firewall ↔ DMZ ↔ weitere Firewall ↔ Intranet
-- Vorteil: Schutz des Intranets durch Segmentierung
+### Merkmale und Funktionen:
+- Kontrolliert eingehenden und ausgehenden Datenverkehr nach definierten Regeln.
+- Filterung nach:
+  - Quell-/Zieladressen
+  - Ports
+  - Protokollen
+- Protokolliert alle Zugriffsversuche (Audit-Logs).
+- Kann Eindringversuche erkennen und Alarme auslösen.
+- Konfigurierbar zur Freigabe spezifischer Dienste wie POP oder SMTP.
+- Schutz durch Trennung vom restlichen Netz (z. B. physisch vor dem LAN platziert).
 
-### ▪ Multi-homed Firewall
-- Mehrere Netzwerkkarten (NICs)
-- Verbindet mehrere Netzsegmente logisch & physisch
-- Erlaubt feingranulare Sicherheitszonen
+---
+
+### Bastion Host
+
+Ein **Bastion Host** ist ein speziell gesicherter Rechner, der als Schutzschild zwischen dem internen und externen Netzwerk dient.
+
+#### Eigenschaften:
+- Zwei Schnittstellen:
+  - Öffentliche (Internet)
+  - Private (Intranet)
+- Vermittelt und prüft eingehenden und ausgehenden Verkehr.
+- Häufig gezielt gehärtet (minimale Dienste, starke Authentifizierung).
 
 ---
 
+### Screened Subnet (DMZ)
 
+Ein **Screened Subnet** ist eine abgesicherte Zone zwischen dem Internet und dem Intranet.
+
+#### Typische Struktur bei Drei-homed-Firewall:
+- **Interface 1:** Internet
+- **Interface 2:** DMZ (für öffentliche Dienste)
+- **Interface 3:** Internes Netzwerk
+
+#### Vorteile:
+- Externe Zugriffe erreichen nur die DMZ, nicht das interne Netz.
+- Schutz vor direktem Zugriff auf interne Ressourcen.
+
+#### Nachteile:
+- Bei Kompromittierung der zentralen Firewall → Gefahr für DMZ und Intranet.
+- Bessere Sicherheit durch **mehrstufige Firewalls** (z. B. separate Firewall zwischen DMZ und Intranet).
 
 ---
+
+### Multi-homed Firewall
+
+Eine **Multi-homed Firewall** besitzt mehr als zwei Netzwerkschnittstellen.
+
+#### Eigenschaften:
+- Verbindet mehrere Netzsegmente logisch und physisch.
+- Ermöglicht fein abgestufte Sicherheitszonen.
+- Erhöht Effizienz und Ausfallsicherheit.
+- Für höhere Sicherheit: Einsatz von **Back-to-Back-Firewall-Architektur** empfohlen.
+
+---
+
+### Demilitarized Zone (DMZ)
+
+Die **DMZ** ist ein „Pufferbereich“ zwischen sicherem LAN und unsicherem Internet.
+
+#### Merkmale:
+- Schützt interne Systeme vor direkten Zugriffen von außen.
+- Dienste mit öffentlichem Zugriff (Web, FTP, Mail) werden in der DMZ betrieben.
+- Kein direkter Zugriff von außen auf das interne Netzwerk möglich.
+- Webserver in der DMZ sollten **nicht direkt** mit internen Datenbankservern kommunizieren.
+- Realisierung meist mit **mehrschnittigen Firewalls**.
+---
+
+# Vergleich: Firewall vs. IDS vs. IPS
+
+| Merkmal                   | **Firewall**                                      | **IDS (Intrusion Detection System)**             | **IPS (Intrusion Prevention System)**            |
+|--------------------------|---------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
+| **Ziel**                 | Zugriffskontrolle und Paketfilterung              | Angriffserkennung                               | Angriffserkennung und Verhinderung               |
+| **Arbeitsweise**         | Regelbasiertes Blockieren/Erlauben von Traffic    | Passives Monitoring und Alarmierung             | Aktive Blockierung und Traffic-Manipulation      |
+| **Position im Netzwerk** | Zwischen internem und externem Netz (Gateway)     | Meist hinter der Firewall (z. B. SPAN-Port)      | Inline im Datenpfad (zwischen Endpunkten)        |
+| **Traffic-Verarbeitung** | Blockiert oder erlaubt Pakete anhand von Regeln   | Analysiert Kopien des Datenverkehrs             | Analysiert und blockiert/ändert Traffic direkt   |
+| **Reaktion auf Angriffe**| Blockiert nach Regeln                             | Alarmiert (Log, E-Mail, SIEM-Anbindung)         | Blockiert/verändert Traffic, trennt Verbindungen |
+| **Regelbasis**           | Manuell definierte Regeln                         | Signatur- oder verhaltensbasiert                | Signatur- oder verhaltensbasiert                 |
+| **Fokus**                | Zugriffskontrolle                                | Erkennung von Angriffen (z. B. Exploits)         | Erkennung und Verhinderung von Angriffen         |
+| **Einfluss auf Latenz**  | Gering bis mittel                                 | Gering (da passiv)                              | Mittel bis hoch (durch Analyse im Datenpfad)     |
+| **False Positives**      | Selten bei korrekter Konfiguration                | Möglich (führt zu Fehlalarmen)                  | Kritisch (kann legitimen Traffic blockieren)     |
+| **Beispiele**            | iptables, pfSense, Cisco ASA                      | Snort (IDS-Modus), Suricata, Zeek               | Snort (IPS-Modus), Suricata, Cisco Firepower     |# Vergleich: Firewall vs. IDS vs. IPS
+
+| Merkmal                   | **Firewall**                                      | **IDS (Intrusion Detection System)**             | **IPS (Intrusion Prevention System)**            |
+|--------------------------|---------------------------------------------------|--------------------------------------------------|--------------------------------------------------|
+| **Ziel**                 | Zugriffskontrolle und Paketfilterung              | Angriffserkennung                               | Angriffserkennung und Verhinderung               |
+| **Arbeitsweise**         | Regelbasiertes Blockieren/Erlauben von Traffic    | Passives Monitoring und Alarmierung             | Aktive Blockierung und Traffic-Manipulation      |
+| **Position im Netzwerk** | Zwischen internem und externem Netz (Gateway)     | Meist hinter der Firewall (z. B. SPAN-Port)      | Inline im Datenpfad (zwischen Endpunkten)        |
+| **Traffic-Verarbeitung** | Blockiert oder erlaubt Pakete anhand von Regeln   | Analysiert Kopien des Datenverkehrs             | Analysiert und blockiert/ändert Traffic direkt   |
+| **Reaktion auf Angriffe**| Blockiert nach Regeln                             | Alarmiert (Log, E-Mail, SIEM-Anbindung)         | Blockiert/verändert Traffic, trennt Verbindungen |
+| **Regelbasis**           | Manuell definierte Regeln                         | Signatur- oder verhaltensbasiert                | Signatur- oder verhaltensbasiert                 |
+| **Fokus**                | Zugriffskontrolle                                | Erkennung von Angriffen (z. B. Exploits)         | Erkennung und Verhinderung von Angriffen         |
+| **Einfluss auf Latenz**  | Gering bis mittel                                 | Gering (da passiv)                              | Mittel bis hoch (durch Analyse im Datenpfad)     |
+| **False Positives**      | Selten bei korrekter Konfiguration                | Möglich (führt zu Fehlalarmen)                  | Kritisch (kann legitimen Traffic blockieren)     |
+| **Beispiele**            | iptables, pfSense, Cisco ASA                      | Snort (IDS-Modus), Suricata, Zeek               | Snort (IPS-Modus), Suricata, Cisco Firepower     |
 
