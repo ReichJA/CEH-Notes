@@ -306,3 +306,153 @@ Eine **host-based firewall** (hostbasierte Firewall) wird direkt auf einem einze
 | Angriffserkennung lokal  | Eingeschränkt              | Sehr gut                      |
 
 ---
+
+# 🔥 Übersicht: Firewall-Typen & Technologien
+
+## 🔹 1. Klassische Firewall-Typen (nach Mechanismus)
+
+| Typ                           | OSI-Schicht(en)                    | Hauptfunktion |
+|-------------------------------|------------------------------------|----------------|
+| Packet Filtering Firewall     | Netzwerk (Layer 3)                 | IP-/Port-Filter |
+| Circuit-Level Gateway         | Sitzung (Layer 5)                  | TCP-Handshake-Überwachung |
+| Stateful Inspection Firewall  | L3–L7                              | Sitzungsüberwachung & Deep Packet Inspection |
+| Application Proxy Firewall    | Anwendung (Layer 7)                | Dienstspezifischer Proxy |
+| NAT (Network Address Translation) | Netzwerk/Transport (L3/L4)     | IP/Port-Umsetzung + Maskierung |
+| VPN (Virtual Private Network)     | außerhalb OSI-Modell            | Verschlüsselter Tunnel über Internet |
+| NGFW (Next-Generation Firewall)   | L3–L7 + Cloud                    | Erweiterte Sicherheitsfunktionen inkl. IPS & DPI |
+
+---
+
+## 🔹 2. Detaillierte Beschreibungen
+
+### 🔸 Packet Filtering Firewall
+- Filtert einzelne IP-Pakete anhand folgender Kriterien:
+  - Source/Destination IP
+  - Source/Destination Port
+  - TCP-Flags (z. B. SYN, ACK)
+  - Protokolltyp (z. B. TCP, UDP)
+  - Richtung & Netzwerkinterface
+- Arbeitet auf OSI Layer 3 (Netzwerk)
+- **Vorteile:** Schnell, effizient
+- **Nachteile:** Kein Kontext über Verbindungen
+
+---
+
+### 🔸 Circuit-Level Gateway Firewall
+- Arbeitet auf OSI Layer 5 (Sitzung)
+- Kontrolliert den Aufbau von TCP-Sitzungen (3-Way Handshake)
+- Verbirgt interne IP-Adressen durch Verwendung eigener Proxy-IP
+- **Vorteile:** Einfach, effektiv für Session-basierte Kontrolle
+- **Nachteile:** Keine inhaltliche Paketprüfung
+
+---
+
+### 🔸 Stateful Multilayer Inspection Firewall
+- Kombiniert:
+  - Packet Filtering
+  - Circuit-Level Inspection
+  - Application Layer Awareness
+- Arbeitet über mehrere Schichten (L3 bis L7)
+- **Merkmale:**
+  - Speichert Sitzungszustände
+  - Deep Packet Inspection (DPI)
+  - Beispiele: Cisco PIX
+- **Vorteile:** Hohe Sicherheit, umfassende Kontrolle
+
+---
+
+### 🔸 Application Proxy Firewall
+- Funktioniert als Vermittler für bestimmte Protokolle (z. B. FTP, Telnet)
+- **Merkmale:**
+  - Trennt internes und externes Netzwerk
+  - Kapselt Kommunikation vollständig
+  - Caching-Möglichkeiten
+  - Transparenz für Nutzer und Server
+- **Vorteile:**
+  - Erhöhte Sicherheit und Performance durch Caching
+  - Logging auf Anwendungsebene
+  - Schutz vor IP-Schwächen
+- **Nachteile:**
+  - Höherer Aufwand
+  - Clients/Anwendungen müssen ggf. angepasst werden
+
+---
+
+### 🔸 Network Address Translation (NAT)
+- Wandelt interne IP-Adressen zu extern sichtbaren IPs um
+- Variationen:
+  - 1:1 statische Zuweisung
+  - Dynamisch ohne Port-Mapping
+  - PAT (Port Address Translation)
+  - Dynamisch mit IP+Port
+- **Vorteile:**
+  - Spart öffentliche IPs
+  - Versteckt interne Struktur
+  - Kontrolliert ausgehenden Traffic
+- **Nachteile:**
+  - Stört Verschlüsselung & Authentifizierung
+  - Problematisch bei dynamischem Portfiltering
+
+---
+
+### 🔸 Virtual Private Network (VPN)
+- Verschlüsselte Verbindung über öffentliches Netzwerk
+- Prinzipien:
+  - Verschlüsselung
+  - Integritätsprüfung
+  - Kapselung
+- **Vorteile:**
+  - Schützt Datenübertragung
+  - Remote-Zugriff möglich
+- **Nachteile:**
+  - Zielnetzwerk bleibt potenziell verwundbar
+  - Kein direkter Firewall-Schutz
+
+---
+
+### 🔸 Next-Generation Firewall (NGFW)
+- Erweiterung klassischer Firewalls um intelligente Sicherheitsfunktionen
+
+#### Merkmale:
+- Deep Packet Inspection (DPI)
+- Application Awareness & Control
+- Intrusion Prevention System (IPS)
+- TLS/SSL-Inspection
+- Cloud-basierte Bedrohungsdatenbanken
+- Benutzer-/Rollenbasierte Regeln
+
+#### Vorteile:
+- Schutz gegen moderne Bedrohungen
+- Transparenz über Applikationen
+- Integration in Zero-Trust-Architekturen
+
+---
+
+## 🔹 3. Vergleich klassisch vs. Next-Gen
+
+| Funktion                         | Klassische Firewall | NGFW                  |
+|----------------------------------|----------------------|------------------------|
+| IP-/Port-Filterung               | ✅                   | ✅                     |
+| Stateful Inspection              | ✅                   | ✅                     |
+| Application Awareness            | ❌                   | ✅                     |
+| Intrusion Prevention (IPS)       | ❌                   | ✅                     |
+| TLS/SSL-Inspection               | ❌                   | ✅                     |
+| Cloud Threat Intelligence        | ❌                   | ✅                     |
+| Benutzer-/Rollenbasierte Regeln | ❌                   | ✅                     |
+
+---
+
+## 🔹 4. OSI-Zuordnung (Aus Tabelle)
+
+| OSI-Schicht     | Technologien                                      |
+|------------------|---------------------------------------------------|
+| Anwendung (L7)   | Application Proxy, VPN, NGFW                     |
+| Präsentation (L6)| VPN                                              |
+| Sitzung (L5)     | Circuit-Level Gateway, VPN                       |
+| Transport (L4)   | Packet Filtering, NAT, VPN                       |
+| Netzwerk (L3)    | Packet Filtering, Stateful, NAT, VPN, NGFW       |
+| Sicherung (L2)   | VPN, Packet Filtering (ggf. MAC-Based)           |
+| Bitübertragung (L1)| –                                              |
+
+---
+
