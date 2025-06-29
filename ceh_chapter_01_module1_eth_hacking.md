@@ -87,17 +87,7 @@
 
 ---
 
-### 🔎 Cyber Kill Chain Phasen
-
-1. **Reconnaissance:** Informationsbeschaffung
-2. **Weaponization:** Erstellung schadhafter Payloads
-3. **Delivery:** Zustellung z. B. per Mail, USB
-4. **Exploitation:** Ausnutzung der Schwachstelle
-5. **Installation:** Schadcode wird installiert
-6. **Command & Control:** Aufbau eines Steuerkanals
-7. **Actions on Objectives:** Zielerreichung (Exfiltration, Zerstörung)
-
-# 🔁 Cyber Kill Chain Methodology
+# 🔁 Cyber Kill Chain
 
 Die **Cyber Kill Chain** ist ein von Lockheed Martin entwickeltes Modell zur Beschreibung der Phasen eines gezielten Cyberangriffs. Ziel ist es, Angriffe frühzeitig zu erkennen, besser zu verstehen und effektiv zu stoppen.
 
