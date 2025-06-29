@@ -258,18 +258,6 @@ Sub-Techniken: Spear Phishing Attachment, Spear Phishing Link, Spear Phishing vi
 
 ---
 
-### 📃 Informationssicherheitsgesetze & Standards
-
-- **PCI DSS (Payment Card Industry Data Security Standard):** Schutz von Kartenzahlungsdaten durch Sicherheitsanforderungen für Händler und Zahlungsdienstleister.
-- **ISO/IEC 27001 (Information Security Management Systems):** Internationaler Standard für Informationssicherheits-Managementsysteme (ISMS).
-- **HIPAA (Health Insurance Portability and Accountability Act):** US-amerikanischer Standard zum Schutz von Gesundheitsdaten.
-- **SOX (Sarbanes-Oxley Act):** US-Gesetz zur Sicherstellung korrekter Finanzberichterstattung.
-- **DMCA (Digital Millennium Copyright Act):** Schützt Urheberrechte im digitalen Raum (USA).
-- **FISMA (Federal Information Security Management Act):** Sicherheitsanforderungen für US-Behörden.
-- **GDPR (General Data Protection Regulation):** EU-weite Datenschutzverordnung mit extraterritorialem Geltungsbereich.
-- **DPA 2018 (UK Data Protection Act 2018):** Britisches Datenschutzgesetz, angepasst an Post-Brexit-Bedingungen.
-
-
 # 📚 Übersicht relevanter Regelwerke in Informationssicherheit & Datenschutz (mit Kurzfassung)
 
 Eine strukturierte Übersicht über internationale Normen, Industriestandards und Gesetze zu Datenschutz, Cybersicherheit und IT-Compliance.
@@ -292,12 +280,3 @@ Eine strukturierte Übersicht über internationale Normen, Industriestandards un
 | **FISMA**               | Federal Information Security Management Act                    | Behördliche Informationssicherheit     | US-Gesetz                | Sicherheitsvorgaben für US-Bundesbehörden                                        | Verpflichtet US-Behörden zur Informationssicherheit und Risikomanagement.                 |
 | **GDPR**                | General Data Protection Regulation                              | Datenschutz-Grundverordnung            | EU-Verordnung            | Einheitlicher Datenschutz in der EU                                              | Schützt personenbezogene Daten EU-weit und regelt deren Verarbeitung.                     |
 | **DPA 2018**            | Data Protection Act 2018                                       | Datenschutzgesetz UK                   | UK-Gesetz                | Nationale Umsetzung der GDPR im Vereinigten Königreich                          | Ergänzt die DSGVO im britischen Recht und regelt nationale Ausnahmen.                     |
-
----
-
-> Stand: 2025 – Änderungen und Erweiterungen vorbehalten.
-
-
----
-
-**Ende Cheatsheet Modul 1**
