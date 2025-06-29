@@ -34,6 +34,16 @@
 
 ---
 
+# Übersicht: Hacking Methodologies and Frameworks
+
+| Framework / Modell                   | Ursprung / Entwickler     | Zweck / Fokus                                                   | Hauptbestandteile / Phasen                                                                 |
+|-------------------------------------|---------------------------|------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| **CEH Ethical Hacking Framework**   | EC-Council                | Systematische Vorgehensweise beim ethischen Hacken              | 1. Reconnaissance<br>2. Scanning<br>3. Gaining Access<br>4. Maintaining Access<br>5. Covering Tracks |
+| **Cyber Kill Chain**                | Lockheed Martin           | Früherkennung & Verteidigung gegen gezielte Cyberangriffe       | 1. Reconnaissance<br>2. Weaponization<br>3. Delivery<br>4. Exploitation<br>5. Installation<br>6. C2<br>7. Actions on Objectives |
+| **MITRE ATT&CK Framework**          | MITRE Corporation         | Klassifizierung realer Angreifertechniken & -taktiken           | Tactics (z. B. Execution, Persistence)<br>Techniques (z. B. Pass-the-Hash)<br>Mitigations & Detections |
+| **Diamond Model of Intrusion Analysis** | Intelligence Community   | Analyse und Visualisierung von Cyberangriffen                   | Adversary<br>Infrastructure<br>Capability<br>Victim                                          |
+
+
 ### ⚖️ Ethical Hacking Prozess (CEH Framework)
 
 1. **Reconnaissance:** Zielauswahl, Sammeln öffentlich verfügbarer Informationen.
