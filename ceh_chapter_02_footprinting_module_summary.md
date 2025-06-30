@@ -95,14 +95,17 @@ Angreifer sammeln Infos zu DNS-Servern, -Einträgen und -Typen, um Hosts im Ziel
 
 ## E-Mail-Tracking
 
-### Tools
+### E-Mail Tracking Tools
 
-- IP2LOCATION Email Header Tracer
-- MxToolbox
-- eMailTrackerPro
-- Holehe
-- DNSChecker Email Header Analyzer
-- Social Catfish
+| Tool                          | Link |
+|-------------------------------|------|
+| **IP2LOCATION Email Header Tracer** | [https://www.ip2location.com/email-tracer](https://www.ip2location.com/email-tracer) |
+| **MxToolbox**                        | [https://mxtoolbox.com/EmailHeaders.aspx](https://mxtoolbox.com/EmailHeaders.aspx) |
+| **eMailTrackerPro**                 | [https://www.emailtrackerpro.com](https://www.emailtrackerpro.com) |
+| **Holehe**                          | [https://github.com/megadose/holehe](https://github.com/megadose/holehe) |
+| **DNSChecker Email Header Analyzer** | [https://dnschecker.org/email-header-analyzer.php](https://dnschecker.org/email-header-analyzer.php) |
+| **Social Catfish**                 | [https://socialcatfish.com](https://socialcatfish.com) |
+
 
 ### Gewonnene Informationen
 
