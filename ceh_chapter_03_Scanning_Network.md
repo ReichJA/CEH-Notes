@@ -135,13 +135,10 @@ hping3 -A 10.0.0.25 -p 80
 - `10.0.0.25`: Ziel-IP-Adresse.
 - `-p 80`: Zielport (in diesem Fall HTTP-Port).
 
----
-
 ## Zweck des ACK-Scans
 
 Diese Scan-Methode dient dazu, die Existenz einer **Firewall** und deren **Regelwerke** zu erkennen.
 
----
 
 ## Hintergrund
 
