@@ -125,7 +125,7 @@ hping3 -1 10.0.1.x --rand-dest -I eth0
 hping3 -9 HTTP -I eth0
 hping3 -S 192.168.1.1 -a 192.168.1.254 -p 22 --flood
 ```
-## Beispiel
+#### Beispiel
 
 ```bash
 hping3 -A 10.0.0.25 -p 80
@@ -135,12 +135,12 @@ hping3 -A 10.0.0.25 -p 80
 - `10.0.0.25`: Ziel-IP-Adresse.
 - `-p 80`: Zielport (in diesem Fall HTTP-Port).
 
-## Zweck des ACK-Scans
+####Zweck des ACK-Scans
 
 Diese Scan-Methode dient dazu, die Existenz einer **Firewall** und deren **Regelwerke** zu erkennen.
 
 
-## Hintergrund
+#### Hintergrund
 
 - **Einfache Paketfilter** (stateless):
   - Lassen ACK-Pakete passieren.
@@ -151,22 +151,6 @@ Diese Scan-Methode dient dazu, die Existenz einer **Firewall** und deren **Regel
   - Erkennen, dass kein Verbindungsaufbau erfolgt ist.
   - Blockieren ACK-Pakete, wenn sie nicht zu einer bestehenden Verbindung gehören.
   - Verhindern damit die Etablierung einer Antwort vom Ziel.
-
----
-
-## Interpretation
-
-- Eine **Antwort** (z. B. TCP-RST) zeigt, dass der Host erreichbar ist und eine einfache Filterung vorliegt.
-- **Keine Antwort** oder ICMP-Fehler deuten auf eine stateful Firewall hin, die Pakete ohne gültige Session blockiert.
-
----
-
-## Fazit
-
-ACK-Scans eignen sich besonders zur:
-- **Analyse von Firewalls**
-- **Erkennung von Paketfilterregeln**
-- **Indirekten Identifikation von erreichbaren Hosts**, auch wenn ICMP blockiert ist
 
 
 
