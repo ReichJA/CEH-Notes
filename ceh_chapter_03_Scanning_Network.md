@@ -182,24 +182,129 @@ sudo hping3 --ack -p 80 10.10.1.11
 | `PRTG Network Monitor`     | [paessler.com](https://www.paessler.com) |
 
 
-## 🔍 1. Host Discovery
-
-Host Discovery ist der erste Schritt im Network Scanning. Ziel ist es, aktive Systeme zu identifizieren, um unnötige Portscans auf inaktive Hosts zu vermeiden.
+## 🧠 Ziel: Host Discovery durch verschiedene Scan-Methoden
 
 ---
 
-## 📡 Host Discovery Techniques
+## 🔍 1. ICMP Echo Ping Scan
 
-| Methode               | Beschreibung |
-|----------------------|--------------|
-| **ARP Ping Scan**    | Sendet ARP-Anfragen im LAN; funktioniert auch bei restriktiven Firewalls. |
-| **UDP Ping Scan**    | Sendet UDP-Pakete (Default Port: 40125) – Antwort zeigt aktiven Host. |
-| **ICMP Ping Scan**   | Sendet ICMP Echo Request – Antwort bestätigt aktive Hosts. |
-| **ICMP Timestamp Ping** | Fragt Zeitstempel des Hosts ab – nützlich bei geblockten Echo-Anfragen. |
-| **ICMP Address Mask Ping** | Fragt Subnetzmaske ab – ebenfalls nützlich bei geblockten Echos. |
-| **TCP SYN Ping**     | Initiiert halbe TCP-Verbindung mit SYN, prüft auf ACK – Default: Port 80. |
-| **TCP ACK Ping**     | Sendet TCP ACK – aktiver Host antwortet mit RST. |
-| **IP Protocol Scan** | Nutzt Header von Protokollen (ICMP/IGMP/TCP/UDP) zur Host-Erkennung. |
+- Sendet ICMP Echo Request (Type 8)
+- Antwortet der Host mit Echo Reply (Type 0), ist er erreichbar
+- Blockieren viele Firewalls → evtl. keine Antwort
+
+### Nmap:
+```bash
+nmap -sn -PE 192.168.0.0/24
+```
+
+---
+
+## 🧭 2. ICMP Address Mask Ping Scan
+
+- Sendet ICMP Address Mask Request (Type 17)
+- Host antwortet mit Mask Reply (Type 18) → enthält Subnetzmaske
+- Wird heute kaum noch unterstützt (veraltet)
+
+### Nmap:
+```bash
+nmap -sn -PM 192.168.0.0/24
+```
+
+---
+
+## ⏱️ 3. ICMP Timestamp Ping Scan
+
+- Sendet ICMP Timestamp Request (Type 13)
+- Antwort (Type 14) enthält Uhrzeitwerte
+- Dient zur Zeitsynchronisation / Fingerprinting
+
+### Nmap:
+```bash
+nmap -sn -PP 192.168.0.0/24
+```
+
+---
+
+## 🌐 4. IP Protocol Ping Scan
+
+- Sendet IP-Pakete mit ungewöhnlicher Protokollnummer (z. B. 255)
+- Antwort: ICMP Destination Unreachable → Host lebt
+- Nutzt keine typischen ICMP/UDP/TCP-Ports
+
+### Nmap:
+```bash
+nmap -sn -PO 192.168.0.0/24
+```
+
+---
+
+## 🛰️ 5. UDP Ping Scan
+
+- Sendet UDP-Pakete (z. B. an Port 53)
+- Erwartet ICMP Port Unreachable → Host ist aktiv
+- Keine Antwort kann vieles bedeuten (offen, gefiltert...)
+
+### Nmap:
+```bash
+nmap -sn -PU53 192.168.0.0/24
+```
+
+---
+
+## 📡 6. TCP SYN Ping Scan
+
+- Sendet TCP SYN an definierte Ports
+- Antwort:
+  - SYN-ACK → Port offen → Host lebt
+  - RST → Port geschlossen → Host lebt
+- Nützlich bei ICMP-Blockierung
+
+### Nmap:
+```bash
+nmap -sn -PS80,443 192.168.0.0/24
+```
+
+---
+
+## 📡 7. TCP ACK Ping Scan
+
+- Sendet TCP ACK an definierte Ports
+- Antwort:
+  - RST → Host lebt
+  - ICMP Type 3 Code 13 → Paket gefiltert → Host lebt
+
+### Nmap:
+```bash
+nmap -sn -PA22,80 192.168.0.0/24
+```
+
+---
+
+## 🔧 8. ARP Scan
+
+- Sendet ARP-Request an jede IP im Subnetz
+- Antwortet ein Gerät, lebt es
+- Funktioniert nur **im lokalen Layer-2-Netzwerk**
+
+### Beispiel:
+```bash
+sudo arp-scan 192.168.0.0/24
+```
+
+---
+
+## 📘 Vergleichstabelle – Host Discovery Scan-Typen
+
+| Scan-Typ             | Protokoll | Reaktion                | Vorteile                         | Nachteil                          |
+|----------------------|-----------|-------------------------|----------------------------------|-----------------------------------|
+| ICMP Echo            | ICMP      | Echo Reply              | Schnell, klassisch               | Oft geblockt                      |
+| ICMP Timestamp       | ICMP      | Timestamp Reply         | Zeitabgleich, Fingerprinting     | Selten unterstützt                |
+| ICMP Mask            | ICMP      | Mask Reply              | Subnetzmaske erkennen            | Veraltet                          |
+| IP Protocol          | IP        | ICMP Protocol Unreach   | Umgeht Filter                    | Selten unterstützt                |
+| UDP Ping             | UDP       | ICMP Port Unreachable   | Umgehung von ICMP-Block          | Keine Antwort = unklar            |
+| TCP SYN              | TCP       | SYN-ACK / RST           | Nützlich bei ICMP-Block          | Nicht stealthy                    |
+| TCP ACK              | TCP       | RST / ICMP              | Firewall-Fingerprint möglich     | RST kann unterdrückt werden       |
+| ARP Scan             | ARP       | ARP Reply               | Zuverlässig auf Layer 2          | Nur im selben Subnetz             |
 
 ---
 
