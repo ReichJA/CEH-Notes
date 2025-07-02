@@ -1,6 +1,29 @@
 
 # Cheatsheet: Modul 9 – Social Engineering
 
+## Engineering & Täuschungstechniken – Übersicht
+
+| Begriff              | Beschreibung                                                                                  | Ziel/Absicht                            | Merkhilfe / Herkunft                                    |
+|----------------------|-----------------------------------------------------------------------------------------------|------------------------------------------|---------------------------------------------------------|
+| Phishing             | Gefälschte Nachricht/Website zur Abfrage sensibler Daten                                     | Logins, Bankdaten                        | Wie „fishing“ – Angeln nach Daten mit einem Köder       |
+| Spear Phishing       | Zielgerichtetes Phishing gegen Einzelpersonen oder Gruppen                                   | Gezielte Kompromittierung                | „Spear“ = Speer – gezielt statt breit gestreut          |
+| Whaling              | Phishing auf hochrangige Führungskräfte                                                      | Hochwertige Ziele                        | „Whale“ = großer Fisch → CEOs als große Beute           |
+| Smishing             | Phishing via SMS oder Messenger                                                              | Mobile Daten                             | SMS + Phishing = Smishing                               |
+| Vishing              | Täuschung über Telefonanrufe                                                                 | Vertrauensmissbrauch                     | Voice + Phishing = Vishing                              |
+| Pretexting           | Täuschung unter einem erfundenen Vorwand                                                     | Identitätsdiebstahl                      | „Pretext“ = Vorwand, Geschichte                         |
+| Pharming             | DNS-Manipulation zur Umleitung auf gefälschte Seiten                                         | Login-Daten, Malware                     | „Farming“ → Nutzer „anbauen“ und heimlich ernten        |
+| Quishing             | QR-Codes leiten zu gefälschten Seiten oder Downloads                                         | Malware, Datenklau                       | QR + Phishing = Quishing                                |
+| BEC                  | Geschäftliche E-Mail-Manipulation                                                            | Fake-Rechnungen, Zahlungen               | Business Email Compromise = kompromittierte Firmenmail  |
+| Baiting              | Einsatz eines Köders (z. B. USB-Stick)                                                       | Neugier ausnutzen                        | „Bait“ = Köder                                           |
+| Honey Trap           | Verführung oder emotionale Bindung zur Ausnutzung                                            | Erpressung, Manipulation                 | „Honigfalle“ – süß, aber gefährlich                     |
+| Piggybacking         | Zugang durch bewusstes Mitgehen hinter autorisierter Person                                  | Physischer Zugang                        | „Aufsatteln“, sich „mittragen lassen“                   |
+| Tailgating           | Zugang durch Mitgehen ohne Wissen des Türöffners                                             | Zutritt erhalten                         | „Im Windschatten folgen“ – unbemerkt durch offene Tür   |
+| Dumpster Diving      | Durchsuchen von Müll nach verwertbaren Informationen                                         | Papierdokumente, Hardware                | „Dumpster“ = Müllcontainer                              |
+| Impersonation        | Vortäuschung einer (falschen) Identität                                                      | Vertrauen erschleichen                   | „to impersonate“ = sich als jemand anderes ausgeben     |
+| Shoulder Surfing     | Beobachten von Eingaben (Passwörter, PINs)                                                   | Zugangsdaten ablesen                     | Über die Schulter schauen („Surfing“)                  |
+| Watering Hole Attack | Infizierung von Webseiten, die von Zielgruppen häufig besucht werden                         | Malware verbreiten                       | Wie ein Tier am Wasserloch – Angreifer lauert dort      |
+| Man-in-the-Middle    | Abfangen oder Manipulation von Kommunikation zwischen zwei Parteien                          | Daten mitlesen, manipulieren             | Dazwischengeschaltete Person – „Mittelsmann“            |
+
 ---
 
 ## 1. Grundlagen und Konzepte
